@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const api = require('./spacex');
+const api = require('../spacex');
 
+/* Extrair os dados necessários da resposta que vem da API */
 function mapLaunchData(data) {
     return {
         id: data.id,
@@ -18,25 +19,25 @@ function mapLaunchData(data) {
     };
 }
 
-// Retorna o próximo lançamento da SpaceX
+/* GET próximo lançamento da SpaceX */
 router.get('/proximo', async (req, res, next) => {
     const { data } = await api.get('next/');
     res.status(200).send(mapLaunchData(data));
 });
 
-// Retorna os próximos lançamentos da SpaceX
+/* GET próximos lançamentos da SpaceX */
 router.get('/proximos', async (req, res, next) => {
     const { data } = await api.get('upcoming/');
     res.status(200).send(data.map(mapLaunchData));
 });
 
-// Retorna o último lançamento da SpaceX
+/* GET último lançamento da SpaceX */
 router.get('/ultimo', async (req, res, next) => {
     const { data } = await api.get('latest/');
     res.status(200).send(mapLaunchData(data));
 });
 
-// Retorna os lançamentos passados da SpaceX
+/* GET lançamentos passados da SpaceX */
 router.get('/passados', async (req, res, next) => {
     const { data } = await api.get('past/');
     res.status(200).send(data.map(mapLaunchData));
